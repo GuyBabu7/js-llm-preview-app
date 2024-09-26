@@ -1,0 +1,4 @@
+deployment:
+  replicaCount: 0
+keda:
+  enabled: false

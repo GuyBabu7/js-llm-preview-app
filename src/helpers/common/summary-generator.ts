@@ -4,6 +4,8 @@ import { ForbiddenError } from '@ww/gql-base-service/lib/apollo-server';
 import { invokeChat } from '/LLMInfra/llm';
 import { LLMModel } from '/LLMInfra/constants';
 import { convertJsonToYaml } from '/utils/yaml';
+import { writeFile } from 'fs/promises';
+import { log } from 'console';
 
 const logger = require('@ww/gql-base-service').logger.withContext(__filename);
 
@@ -35,6 +37,12 @@ export class SummaryGenerator {
 
   private async generateEnglishSummary({ summaryInput }: { summaryInput: Object }) {
     const input = convertJsonToYaml(this.processSummaryInput(summaryInput));
+
+    try {
+      writeFile(`processSummaryInput/vessel_yaml.txt`, input);
+    } catch (err) {
+      logger.debug(err);
+    }
 
     const { content } = await invokeChat({
       taskName: 'VESSEL_SUMMARY',

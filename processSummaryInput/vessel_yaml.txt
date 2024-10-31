@@ -1,0 +1,40 @@
+vesselByIMO:
+  name: GFS MARINE 02
+  imo: 9773442
+  flag: PapuaNewGuinea
+  insurer: Shipowners Mutual
+  lastPortCall:
+    polygon:
+      properties:
+        country: PapuaNewGuinea
+        name: Port Moresby
+    startDate: '2024-10-25T06:41:17.000Z'
+    endDate: '2024-10-25T07:00:55.000Z'
+  reportedPort:
+    ts: '2024-10-06T07:00:00.000Z'
+  complianceRisk:
+    level: Low
+  owner:
+    company:
+      name: Gfs Limited
+      countryEnum: PapuaNewGuinea
+      complianceRisk:
+        level: Low
+      vesselsCount: 4
+      vesselsList:
+      - name: GFS MARINE 02
+        imo: 9773442
+        complianceRisk:
+          level: Low
+  manager:
+    company:
+      name: Gfs Limited
+      countryEnum: PapuaNewGuinea
+      complianceRisk:
+        level: Low
+      vesselsCount: 4
+      vesselsList:
+      - name: GFS MARINE 02
+        imo: 9773442
+        complianceRisk:
+          level: Low

@@ -2,6 +2,7 @@ import { removeEmptyValues } from '@ww/js-core/lib/utils/object';
 import { internalGQLCallOnBehalfUser } from '@ww/node-utils/lib/utils/internalGraphqlCall';
 import { ResolvedUser } from '@ww/gql-schema-types';
 import { VesselCustomizedQuery } from '/gql/vessel.queries';
+import { writeFile } from 'fs/promises';
 
 const logger = require('@ww/gql-base-service').logger.withContext(__filename);
 
@@ -54,23 +55,51 @@ export function filterVesselData(vesselData): Record<string, unknown> {
   // Remove vessels with low compliance risk
   vesselOwnershipList.forEach(ownership => {
     const company = newVesselData.vesselByIMO?.[ownership]?.company;
+    if (company === null) {
+      return;
+    }
 
+    const vesselsMap = new Map<string, Object>();
     ownershipFields.forEach(field => {
       if (company?.[field]) {
-        let count = 0;
         for (let i = (company[field].length || 0) - 1; i >= 0; i--) {
-          if (company[field][i].vessel?.complianceRisk?.level === 'Low') {
-            company[field].splice(i, 1);
-          } else {
-            count++;
+          //
+          // if (
+          //   company[field][i].vessel?.imo !== newVesselData.vesselByIMO.imo &&
+          //   company[field][i].vessel?.complianceRisk?.level === 'Low'
+          // ) {
+          //   company[field].splice(i, 1);
+          // } else if (!vesselsMap.has(company[field][i].vessel?.imo)) {
+          //   vesselsMap.set(company[field][i].vessel.imo, company[field][i].vessel);
+          // }
+
+          if (
+            company[field][i].vessel?.imo === newVesselData.vesselByIMO.imo ||
+            company[field][i].vessel?.complianceRisk?.level !== 'Low'
+          ) {
+            if (!vesselsMap.has(company[field][i].vessel?.imo)) {
+              vesselsMap.set(company[field][i].vessel.imo, company[field][i].vessel);
+            }
           }
         }
 
-        company.vesselsCount = count;
+        delete company[field];
       }
     });
+
+    company.vesselsList = [];
+    vesselsMap.forEach(vessel => {
+      company.vesselsList.push(vessel);
+    });
   });
+
   newVesselData = removeEmptyValues(newVesselData);
+
+  try {
+    writeFile(`processSummaryInput/vessel_json.txt`, JSON.stringify(newVesselData));
+  } catch (err) {
+    logger.debug(err);
+  }
 
   //
   // logger.debug(JSON.stringify(newVesselData));

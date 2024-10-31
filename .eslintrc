@@ -1,0 +1,3 @@
+{
+  "extends": ["@ww/eslint-config/lib/gql/typescript"]
+}

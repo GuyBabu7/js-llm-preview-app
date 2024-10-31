@@ -1,0 +1,12 @@
+.idea/
+node_modules/
+coverage/
+logs/
+lib/
+newrelic_agent.log
+.DS_Store
+.vscode/settings.json
+.jest/
+junit.xml
+integration.junit.xml
+coverage-sources.zip

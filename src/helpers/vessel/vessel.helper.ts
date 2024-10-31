@@ -96,7 +96,7 @@ export function filterVesselData(vesselData): Record<string, unknown> {
   newVesselData = removeEmptyValues(newVesselData);
 
   try {
-    writeFile(`processSummaryInput/vessel_json.txt`, JSON.stringify(newVesselData));
+    writeFile(`processedSummaryInput/vessel_json.txt`, JSON.stringify(newVesselData));
   } catch (err) {
     logger.debug(err);
   }

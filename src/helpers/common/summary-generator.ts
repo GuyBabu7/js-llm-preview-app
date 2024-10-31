@@ -39,7 +39,7 @@ export class SummaryGenerator {
     const input = convertJsonToYaml(this.processSummaryInput(summaryInput));
 
     try {
-      writeFile(`processSummaryInput/vessel_yaml.txt`, input);
+      writeFile(`processedSummaryInput/vessel_yaml.txt`, input);
     } catch (err) {
       logger.debug(err);
     }
